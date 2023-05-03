@@ -9,6 +9,20 @@
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
+        <!-- cni -->
+        <div>
+            <x-input-label for="cni" :value="__('Cni')" />
+            <x-text-input id="cni" class="block mt-1 w-full" type="text" name="cni" :value="old('cni')" required autofocus autocomplete="cni" />
+            <x-input-error :messages="$errors->get('cni')" class="mt-2" />
+        </div>
+
+        <!-- ppr -->
+        <div>
+            <x-input-label for="ppr" :value="__('Ppr')" />
+            <x-text-input id="ppr" class="block mt-1 w-full" type="text" name="ppr" :value="old('ppr')" required autofocus autocomplete="ppr" />
+            <x-input-error :messages="$errors->get('ppr')" class="mt-2" />
+        </div>
+
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
