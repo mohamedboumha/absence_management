@@ -10,10 +10,11 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Director;
+use App\Http\Controllers\SchoolController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    // Route::get('directors', [RegisteredUserController::class, 'create'])
+    // Route::get('register', [RegisteredUserController::class, 'create'])
     //             ->name('register');
 
     // Route::post('register', [RegisteredUserController::class, 'store']);
@@ -61,5 +62,6 @@ Route::middleware('auth')->group(function () {
     // Handle Director
     Route::middleware(['checkRole:admin'])->group(function () {
         Route::resource('directors', Director::class);
+        Route::resource('schools', SchoolController::class);
     });
 });

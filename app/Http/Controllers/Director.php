@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\School;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -21,7 +22,8 @@ class Director extends Controller
     public function index()
     {
         return view('admin.director.index',[
-            'directors' => User::where('role', 'director')->get()
+            'directors' => User::where('role', 'director')->get(),
+            'schools' => School::all()
         ]);
     }
 
@@ -88,6 +90,10 @@ class Director extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrfail($id);
+
+        $user->delete();
+
+        return redirect()->back();
     }
 }

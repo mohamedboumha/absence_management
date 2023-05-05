@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('absences', function (Blueprint $table) {
+        Schema::create('schools', function (Blueprint $table) {
             $table->id();
-            $table->date('start');
-            $table->date('end');
-            $table->enum('motif',['justified' , 'non_justified'])->default('justified');
-            $table->enum('justification',['medical_certificate , Exception license']);
-            $table->foreignId('prof_id');
+            $table->string('name');
+            $table->enum('level', ['0', '1', '2']);
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('absences');
+        Schema::dropIfExists('schools');
     }
 };
