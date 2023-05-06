@@ -9,15 +9,17 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Director;
+use App\Http\Controllers\ProfController;
 use App\Http\Controllers\SchoolController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    // Route::get('register', [RegisteredUserController::class, 'create'])
-    //             ->name('register');
+    Route::get('register', [RegisteredUserController::class, 'create'])
+                ->name('register');
 
-    // Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('register', [RegisteredUserController::class, 'store']);
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('login');
@@ -61,7 +63,20 @@ Route::middleware('auth')->group(function () {
 
     // Handle Director
     Route::middleware(['checkRole:admin'])->group(function () {
-        Route::resource('directors', Director::class);
-        Route::resource('schools', SchoolController::class);
+        Route::get('admin/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
+
+        Route::resource('admin/directors', Director::class);
+        Route::get('admin/schools', [SchoolController::class, 'admin_index'])->name('admin.schools.index');
+        Route::post('admin/schools', [SchoolController::class, 'store'])->name('schools.store');
+        Route::delete('admin/schools/{school}', [SchoolController::class, 'destroy'])->name('schools.destroy');
+        Route::get('admin/schools/{school}', [SchoolController::class, 'edit'])->name('schools.edit');
+        Route::put('admin/schools/{school}', [SchoolController::class, 'update'])->name('schools.update');
+        Route::post('admin/profs', [ProfController::class, 'store'])->name('profs.store');
+        Route::delete('admin/profs', [ProfController::class, 'destroy'])->name('profs.destroy');
+    });
+
+    Route::middleware(['checkRole:director'])->group(function () {
+        Route::get('schools', [SchoolController::class, 'index'])->name('schools.index');
+        Route::get('/schools/profs', [ProfController::class, 'index'])->name('prods.index');
     });
 });

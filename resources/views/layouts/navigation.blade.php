@@ -1,3 +1,24 @@
+<?php
+$navlinks = [
+    'admin' => [
+        [
+            'name' => 'Acceuil',
+            'route' => 'admin.dashboard'
+        ],
+        [
+            'name' => 'Directeurs',
+            'route' => 'directors.index'
+        ],
+        [
+            'name' => 'Ecoles',
+            'route' => 'admin.schools.index'
+        ]
+    ],
+    'director' => []
+]
+?>
+
+
 <nav x-data="{ open: false }" class="bg-blue-900 text-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -5,24 +26,20 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a class="" href="{{ route('dashboard') }}">
+                    <a class="" href="{{ route('admin.dashboard') }}">
                         AManag
                     </a>
                 </div>
 
+
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link class="text-white" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
-                @if (Auth::user()->role == 'admin')
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link class="text-white" :href="route('directors.index')" :active="request()->routeIs('directors.index')">
-                        {{ __('Directors') }}
-                    </x-nav-link>
-                </div>
-                @endif
+                @foreach ($navlinks[Auth::user()->role] as $navlink)
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link class="text-white" :href="route($navlink['route'])" :active="request()->routeIs($navlink['route'])">
+                            {{ $navlink['name'] }}
+                        </x-nav-link>
+                    </div>
+                @endforeach
             </div>
 
             <!-- Settings Dropdown -->
@@ -73,11 +90,14 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+
+        @foreach ($navlinks[Auth::user()->role] as $navlink)
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route($navlink['route'])" :active="request()->routeIs($navlink['route'])">
+                {{ $navlink['name'] }}
             </x-responsive-nav-link>
         </div>
+        @endforeach
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">

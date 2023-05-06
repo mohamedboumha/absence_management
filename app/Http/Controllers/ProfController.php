@@ -28,7 +28,23 @@ class ProfController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'f_name' => 'required',
+            'l_name' => 'required',
+            'cni' => 'required',
+            'ppr' => 'required',
+            'school_id' => 'required'
+        ]);
+
+        $prof = new Prof();
+        $prof->f_name = $request->f_name;
+        $prof->l_name = $request->l_name;
+        $prof->cni = $request->cni;
+        $prof->ppr = $request->ppr;
+        $prof->school_id = $request->school_id;
+        $prof->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -60,6 +76,10 @@ class ProfController extends Controller
      */
     public function destroy(Prof $prof)
     {
-        //
+        $prof_ = Prof::findOrfail($prof->id);
+
+        $prof_->delete();
+
+        return redirect()->back();
     }
 }

@@ -19,6 +19,8 @@
         <x-input-error :messages="$errors->get('level')" class="mt-2" />
     </div>
 
+    {{ $slot }}
+
     <div class="flex items-center justify-end mt-4">
         <x-primary-button class="ml-4">
             {{ __('Ajouter') }}

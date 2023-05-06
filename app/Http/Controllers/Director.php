@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Prof;
 use App\Models\School;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -21,9 +22,10 @@ class Director extends Controller
      */
     public function index()
     {
-        return view('admin.director.index',[
+        return view('admin.directors', [
             'directors' => User::where('role', 'director')->get(),
-            'schools' => School::all()
+            'schools' => School::with('profs')->get(),
+            'profs' => Prof::all()
         ]);
     }
 
@@ -40,6 +42,7 @@ class Director extends Controller
      */
     public function store(Request $request)
     {
+        $user_id = count(User::where('role', 'director')->get()) + 1;
         $request->validate([
             'name' => 'required|string|max:255',
             'cni' => 'required|string|max:255',
@@ -49,6 +52,7 @@ class Director extends Controller
         ]);
 
         $user = User::create([
+            'id' => $user_id,
             'name' => $request->name,
             'cni' => $request->cni,
             'ppr' => $request->ppr,

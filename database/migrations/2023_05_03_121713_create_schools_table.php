@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('level', ['0', '1', '2']);
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

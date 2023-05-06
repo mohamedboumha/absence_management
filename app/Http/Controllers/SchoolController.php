@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\School;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,17 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        //
+        return view('school.index',[
+            'schools' => School::where('user_id', auth()->user()->id)->get(),
+            'directors' => User::where('role', 'director')->get()
+        ]);
+    }
+    public function admin_index()
+    {
+        return view('admin.schools',[
+            'schools' => School::all(),
+            'directors' => User::where('role', 'director')->get()
+        ]);
     }
 
     /**
@@ -28,14 +39,16 @@ class SchoolController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required',
             'level' => 'required',
+            'director_id' => 'required'
         ]);
 
         $school = new School();
-        $school->name = $validatedData['name'];
-        $school->level = $validatedData['level'];
+        $school->name = $request->name;
+        $school->level = $request->level;
+        $school->user_id = $request->director_id;
         $school->save();
 
         return redirect()->back();
@@ -54,7 +67,10 @@ class SchoolController extends Controller
      */
     public function edit(School $school)
     {
-        //
+        return view('school.edit', [
+            'school' => $school,
+            'directors' => User::where('role', 'director')->get()
+        ]);
     }
 
     /**
@@ -62,7 +78,16 @@ class SchoolController extends Controller
      */
     public function update(Request $request, School $school)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required',
+            'level' => 'required',
+            'user_id' => 'required'
+        ]);
+
+        $school->update($data);
+
+        return to_route('admin.schools.index');
+
     }
 
     /**
@@ -70,6 +95,10 @@ class SchoolController extends Controller
      */
     public function destroy(School $school)
     {
-        //
+        $school_ = School::findOrfail($school->id);
+
+        $school_->delete();
+
+        return redirect()->back();
     }
 }
