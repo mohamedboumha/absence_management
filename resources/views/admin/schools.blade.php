@@ -4,11 +4,11 @@
             <div class="bg-white mb-6 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-between mb-5">
-                        <h1 class="font-semibold text-xl">Schools</h1>
+                        <h1 class="font-semibold text-xl">Ecoles</h1>
 
                         <a class="bg" x-data="" x-on:click.prevent="$dispatch('open-modal', 'create-school')">
                             <button {{ !count($directors) ? 'disabled' : '' }} class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 disabled:bg-gray-400">
-                                Add school
+                                Ajouter
                             </button>
                         </a>
                     </div>
@@ -78,3 +78,11 @@
         </div>
     </x-school-form>
 </x-modal>
+
+<x-flash-message class="{{ session('status') == 1 ? 'bg-green-600' : 'bg-red-600' }}" >
+    @if (session('status') == 1)
+        <x-icons.check-circle />
+    @elseif (session('status') == 0)
+        <x-icons.ban />
+    @endif
+</x-flash-message>

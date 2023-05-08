@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Director;
+use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\ProfController;
 use App\Http\Controllers\SchoolController;
 use Illuminate\Support\Facades\Route;
@@ -65,18 +66,19 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['checkRole:admin'])->group(function () {
         Route::get('admin/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
 
-        Route::resource('admin/directors', Director::class);
-        Route::get('admin/schools', [SchoolController::class, 'admin_index'])->name('admin.schools.index');
-        Route::post('admin/schools', [SchoolController::class, 'store'])->name('schools.store');
-        Route::delete('admin/schools/{school}', [SchoolController::class, 'destroy'])->name('schools.destroy');
-        Route::get('admin/schools/{school}', [SchoolController::class, 'edit'])->name('schools.edit');
-        Route::put('admin/schools/{school}', [SchoolController::class, 'update'])->name('schools.update');
-        Route::post('admin/profs', [ProfController::class, 'store'])->name('profs.store');
-        Route::delete('admin/profs', [ProfController::class, 'destroy'])->name('profs.destroy');
+        // directors
+        Route::resource('admin/directors', DirectorController::class);
+
+        //schools
+        Route::resource('admin/schools', SchoolController::class);
+
+        // profs
+        Route::resource('admin/profs', ProfController::class);
+
     });
 
     Route::middleware(['checkRole:director'])->group(function () {
-        Route::get('schools', [SchoolController::class, 'index'])->name('schools.index');
+        Route::get('schools', [SchoolController::class, 'index_'])->name('director.schools.index');
         Route::get('/schools/profs', [ProfController::class, 'index'])->name('prods.index');
     });
 });

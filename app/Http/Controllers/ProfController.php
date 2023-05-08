@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Prof;
+use App\Models\School;
 use Illuminate\Http\Request;
 
 class ProfController extends Controller
@@ -12,8 +13,17 @@ class ProfController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.profs', [
+            'schools' => School::all(),
+            'profs' => Prof::all()
+        ]);
     }
+
+    public function index_()
+    {
+
+    }
+
 
     /**
      * Show the form for creating a new resource.

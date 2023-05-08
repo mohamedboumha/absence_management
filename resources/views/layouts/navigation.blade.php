@@ -11,7 +11,11 @@ $navlinks = [
         ],
         [
             'name' => 'Ecoles',
-            'route' => 'admin.schools.index'
+            'route' => 'schools.index'
+        ],
+        [
+            'name' => 'Professeurs',
+            'route' => 'profs.index'
         ]
     ],
     'director' => []

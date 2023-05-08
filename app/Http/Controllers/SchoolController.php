@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Prof;
 use App\Models\User;
 use App\Models\School;
 use Illuminate\Http\Request;
@@ -13,17 +14,18 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        return view('school.index',[
-            'schools' => School::where('user_id', auth()->user()->id)->get(),
-            'directors' => User::where('role', 'director')->get()
-        ]);
-    }
-    public function admin_index()
-    {
         return view('admin.schools',[
             'schools' => School::all(),
             'directors' => User::where('role', 'director')->get()
         ]);
+    }
+    public function admin_()
+    {
+        return view('school.index',[
+            'schools' => School::where('user_id', auth()->user()->id)->get(),
+            'directors' => User::where('role', 'director')->get()
+        ]);
+
     }
 
     /**
@@ -51,7 +53,10 @@ class SchoolController extends Controller
         $school->user_id = $request->director_id;
         $school->save();
 
-        return redirect()->back();
+        return  redirect()->back()->with([
+            'status' => true,
+            'message' => "L'école a été créée avec succès"
+        ]);
     }
 
     /**
@@ -86,7 +91,7 @@ class SchoolController extends Controller
 
         $school->update($data);
 
-        return to_route('admin.schools.index');
+        return to_route('schools.index');
 
     }
 
@@ -95,10 +100,22 @@ class SchoolController extends Controller
      */
     public function destroy(School $school)
     {
+        foreach (Prof::all() as $profs) {
+            if ($profs->school_id == $school->id) {
+                return redirect()->back()->with([
+                    'status' => false,
+                    'message' => "Vous ne pouvez pas supprimer cette école!"
+                ]);
+            }
+        }
+
         $school_ = School::findOrfail($school->id);
 
         $school_->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with([
+            'status' => true,
+            'message' => "L'école est supprimée avec succès"
+        ]);
     }
 }
