@@ -54,7 +54,10 @@ class ProfController extends Controller
         $prof->school_id = $request->school_id;
         $prof->save();
 
-        return redirect()->back();
+        return  to_route('profs.index')->with([
+            'status' => true,
+            'message' => "Le professeur a été créée avec succès"
+        ]);
     }
 
     /**
@@ -90,6 +93,9 @@ class ProfController extends Controller
 
         $prof_->delete();
 
-        return redirect()->back();
+        return to_route('profs.index')->with([
+            'status' => true,
+            'message' => "Le professeur a été supprimée avec succès"
+        ]);
     }
 }

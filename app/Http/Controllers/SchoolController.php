@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Prof;
 use App\Models\User;
 use App\Models\School;
+use App\Models\Absence;
 use Illuminate\Http\Request;
 
 class SchoolController extends Controller
@@ -19,11 +20,13 @@ class SchoolController extends Controller
             'directors' => User::where('role', 'director')->get()
         ]);
     }
-    public function admin_()
+    public function index_()
     {
-        return view('school.index',[
-            'schools' => School::where('user_id', auth()->user()->id)->get(),
-            'directors' => User::where('role', 'director')->get()
+        $schools = School::where('user_id', auth()->user()->id)->get();
+        return view('director.schools', [
+            'absence' => Absence::all(),
+            'profs' => Prof::with('absences')->get(),
+            'schools' => $schools
         ]);
 
     }
@@ -53,7 +56,7 @@ class SchoolController extends Controller
         $school->user_id = $request->director_id;
         $school->save();
 
-        return  redirect()->back()->with([
+        return  to_route('schools.index')->with([
             'status' => true,
             'message' => "L'école a été créée avec succès"
         ]);
@@ -102,7 +105,7 @@ class SchoolController extends Controller
     {
         foreach (Prof::all() as $profs) {
             if ($profs->school_id == $school->id) {
-                return redirect()->back()->with([
+                return to_route('schools.index')->with([
                     'status' => false,
                     'message' => "Vous ne pouvez pas supprimer cette école!"
                 ]);
@@ -113,7 +116,7 @@ class SchoolController extends Controller
 
         $school_->delete();
 
-        return redirect()->back()->with([
+        return to_route('schools.index')->with([
             'status' => true,
             'message' => "L'école est supprimée avec succès"
         ]);

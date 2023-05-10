@@ -62,7 +62,10 @@ class DirectorController extends Controller
 
         event(new Registered($user));
 
-        return to_route('directors.index');
+        return to_route('directors.index')->with([
+            'status' => true,
+            'message' => "Le Directeur compte a été créée avec succès"
+        ]);
     }
 
     /**
@@ -108,7 +111,7 @@ class DirectorController extends Controller
 
         $user->delete();
 
-        return redirect()->back()->with([
+        return to_route('directors.index')->with([
             'status' => true,
             'message' => "Le Directeur compte est supprimée avec succès"
         ]);

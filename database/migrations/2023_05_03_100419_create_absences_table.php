@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->date('start');
             $table->date('end');
-            $table->enum('motif',['justified' , 'non_justified'])->default('justified');
-            $table->enum('justification',['medical_certificate , Exception license']);
+            $table->boolean('status')->default(false);
+            $table->enum('justification',['-' ,'Medical certificate' , 'Exception license'])->default('-');
             $table->foreignId('prof_id');
             $table->timestamps();
         });

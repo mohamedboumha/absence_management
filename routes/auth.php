@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -78,7 +79,14 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware(['checkRole:director'])->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'director'])->name('dashboard');
+
         Route::get('schools', [SchoolController::class, 'index_'])->name('director.schools.index');
         Route::get('/schools/profs', [ProfController::class, 'index'])->name('prods.index');
+
+        // Absences
+        // Route::resource('absences', AbsenceController::class);
+        Route::get('/{id}/absences', [AbsenceController::class, 'index'])->name('absences.index');
+        Route::post('/{id}/absences', [AbsenceController::class, 'store'])->name('absences.store');
     });
 });

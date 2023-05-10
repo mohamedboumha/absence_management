@@ -7,15 +7,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <script src="//unpkg.com/alpinejs" defer></script>
+        <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts" defer></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
 
         <title>Absence Management</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+        
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/dashboard.js'])
     </head>
     <body style="background-color: #295da5" class="h-screen font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -28,13 +31,14 @@
                         {{ $header }}
                     </div>
                 </header>
-            @endif
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                @endif
+                
+                <!-- Page Content -->
+                <main>
+                    {{ $slot }}
+                </main>
         </div>
-        <x-footer/>
     </body>
+
 </html>
+    
