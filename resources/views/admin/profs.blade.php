@@ -27,16 +27,20 @@
                         <tbody>
                             @foreach ($profs as $prof)
                             <tr class="border dark:border-neutral-500">
-                                <td class="whitespace-nowrap px-6 py-4">{{ $prof->f_name }} {{ $prof->l_name }}</td>
+                                <td class="whitespace-nowrap px-6 py-4">
+                                    <a href="{{ route('profs.show', $prof) }}">
+                                        {{ $prof->f_name }} {{ $prof->l_name }}
+                                    </a>
+                                </td>
                                 <td class="whitespace-nowrap px-6 py-4">{{ $prof->cni }}</td>
                                 <td class="whitespace-nowrap px-6 py-4">{{ $prof->ppr }}</td>
-                                <td class="whitespace-nowrap px-6 py-4">
-                                    @foreach ($schools as $school)
-                                        @if ($school->id == $prof->school_id)
-                                            {{ $school->name }}
-                                        @endif
-                                    @endforeach
-                                </td>
+                                    <td class="whitespace-nowrap px-6 py-4">
+                                        @foreach ($schools as $school)
+                                            @if ($school->id == $prof->school_id)
+                                                {{ $school->name }}
+                                            @endif
+                                        @endforeach
+                                    </td>
                                 <td class="whitespace-nowrap px-6 py-4 flex items-center justify-center">
                                     <form method="post" action="{{ route('profs.destroy', $prof->id) }}">
                                         @csrf
@@ -45,9 +49,9 @@
                                             Supprimer
                                         </button>
                                     </form>
-                                    {{-- <a href="{{ route('profs.edit', $prof->id) }}" class="p-0 text-white font-bold border px-2 bg-green-600">
+                                    <a href="{{ route('profs.edit', $prof->id) }}" class="p-0 text-white font-bold border px-2 bg-green-600">
                                             Modifier
-                                    </a> --}}
+                                    </a>
                                 </td>
                             </tr>
                             @endforeach

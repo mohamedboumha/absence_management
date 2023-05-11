@@ -17,7 +17,13 @@ class AbsenceFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'start' => fake()->date(),
+            'end' => fake()->date(),
+            'status' => fake()->boolean(),
+            'justification' => fake()->randomElement(['-', 'Medical certificate', 'Exception license']),
+            'prof_id' => fake()->numberBetween(1,2),
+            'created_at' => fake()->dateTimeBetween('-1 year', 'now'),
+            'updated_at' => fake()->date(),
         ];
     }
 }

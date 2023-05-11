@@ -87,4 +87,5 @@ class AbsenceController extends Controller
     {
         //
     }
+
 }

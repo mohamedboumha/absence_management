@@ -60,7 +60,6 @@ class DashboardController extends Controller
                 ];
             }
         }
-        // dd($schoolWithMaxAbsences, $schoolWithMinAbsences);
 
         return view('admin.dashboard', [
             'schools' => School::all(),

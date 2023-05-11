@@ -28,7 +28,7 @@
 
                                 <td class="whitespace-nowrap px-6 py-4">{{ $absence->start }}</td>
                                 <td class="whitespace-nowrap px-6 py-4">{{ $absence->end }}</td>
-                                <td class="whitespace-nowrap px-6 py-4">{{ $absence->status == 0 ? "Justifié" : "Injustifié" }}</td>
+                                <td class="whitespace-nowrap px-6 py-4">{{ $absence->status == 0 ? "Injustifié" : "Justifié" }}</td>
                                 <td class="whitespace-nowrap px-6 py-4">
                                     @if ($absence->justification)
                                         {{ $absence->justification }}

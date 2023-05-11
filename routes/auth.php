@@ -14,6 +14,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Director;
 use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\ProfController;
+use App\Http\Controllers\PDFController;
+
 use App\Http\Controllers\SchoolController;
 use Illuminate\Support\Facades\Route;
 
@@ -75,6 +77,9 @@ Route::middleware('auth')->group(function () {
 
         // profs
         Route::resource('admin/profs', ProfController::class);
+
+        //PDF
+        Route::get('/pdf/{data}', [PDFController::class,'generatePDF'])->name('pdf');   
 
     });
 

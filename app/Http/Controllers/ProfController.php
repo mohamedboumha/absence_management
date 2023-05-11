@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Prof;
 use App\Models\School;
+use App\Models\Absence;
 use Illuminate\Http\Request;
 
 class ProfController extends Controller
@@ -65,7 +66,13 @@ class ProfController extends Controller
      */
     public function show(Prof $prof)
     {
-        //
+        $absences = Absence::where('prof_id', $prof->id)->paginate(10);
+
+        return view('prof.show', [
+            'prof' => $prof,
+            'school' => School::findOrFail($prof->school_id),
+            'absences' => $absences
+        ]);
     }
 
     /**
@@ -73,7 +80,10 @@ class ProfController extends Controller
      */
     public function edit(Prof $prof)
     {
-        //
+        return view('prof.edit', [
+            'prof' => $prof,
+            'school' => School::findOrFail($prof->school_id)
+        ]);
     }
 
     /**
