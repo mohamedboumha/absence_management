@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('schools', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('level', ['0', '1', '2']);
+            $table->string('name_ar');
+            $table->enum('level', ['Primaire', 'Collège', 'Lycée']);
             $table->foreignId('user_id');
             $table->timestamps();
         });

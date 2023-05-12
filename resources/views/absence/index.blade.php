@@ -1,7 +1,6 @@
 <x-app-layout>
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+       <x-container>
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-between mb-5">
                         <h1 class="font-semibold text-xl">Professeurs {{ $prof[0]->l_name }}</h1>
@@ -13,45 +12,47 @@
                         </a>
                     </div>
 
-                    <table class="w-full">
-                        <thead>
-                            <tr>
-                                <td class="whitespace-nowrap px-6 py-4">Début</td>
-                                <td class="whitespace-nowrap px-6 py-4">Fin</td>
-                                <td class="whitespace-nowrap px-6 py-4">Statut</td>
-                                <td class="whitespace-nowrap px-6 py-4">Justification</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($absences as $absence)
-                            <tr class="border dark:border-neutral-500">
+                    @if (count($absences))
+                     <x-table :heads="['Début', 'Fin', 'Statut', 'Justification', '']">
+                    </thead>
+                        @foreach ($absences as $absence)
+                        <tr class="border dark:border-neutral-500">
 
-                                <td class="whitespace-nowrap px-6 py-4">{{ $absence->start }}</td>
-                                <td class="whitespace-nowrap px-6 py-4">{{ $absence->end }}</td>
-                                <td class="whitespace-nowrap px-6 py-4">{{ $absence->status == 0 ? "Injustifié" : "Justifié" }}</td>
-                                <td class="whitespace-nowrap px-6 py-4">
-                                    @if ($absence->justification)
-                                        {{ $absence->justification }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-                                {{-- <td class="whitespace-nowrap px-6 py-4">{{ count($absence->absences) }}</td> --}}
-                                {{-- <td class="whitespace-nowrap px-6 py-4">
-                                    <form action="{{ route('absence.index', $absence->id) }}" >
-                                            <button class="p-0 text-white font-bold border px-2 bg-black">
-                                                Gérer les absences
-                                            </button>
-                                        </form>
-                                </td> --}}
-                            </tr>
-                            @endforeach
-                        </tbody>
+                            <td class="whitespace-nowrap px-6 py-4">{{ $absence->start }}</td>
+                            <td class="whitespace-nowrap px-6 py-4">{{ $absence->end }}</td>
+                            <td class="whitespace-nowrap px-6 py-4">{{ $absence->status == 0 ? "Injustifié" : "Justifié" }}</td>
+                            <td class="whitespace-nowrap px-6 py-4">
+                                @if ($absence->justification)
+                                    {{ $absence->justification }}
+                                @else
+                                    -
+                                @endif
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 flex items-center justify-center">
+                                <form method="post" action="{{ route('absences.destroy', ['absence'=>$absence, 'id'=>$prof[0]->id]) }}">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="p-0 text-white font-bold border px-2 bg-red-500">
+                                        Supprimer
+                                    </button>
+                                </form>
+                                <a href="{{ route('absences.edit', ['absence'=>$absence, 'id'=>$prof[0]->id]) }}" class="p-0 text-white font-bold border px-2 bg-green-600">
+                                    Modifier
+                                </a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </x-table>
+                    @else
+                        <div class="flex justify-center">
+                            Il n'y a pas des directeurs!
+                        </div>
+                    @endif
+
                     </table>
-
                 </div>
-            </div>
-        </div>
+       </x-container>
+
     </div>
 </x-app-layout>
 

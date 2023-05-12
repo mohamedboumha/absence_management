@@ -17,13 +17,21 @@
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
+                        <!-- Name Ar -->
+                        <div>
+                            <x-input-label for="name_ar" :value="__('Name (Arabe)')" />
+                            <x-text-input id="name_ar" class="block mt-1 w-full" type="text" name="name_ar" :value="$school->name_ar" required autofocus autocomplete="name_ar" />
+                            <x-input-error :messages="$errors->get('name_ar')" class="mt-2" />
+                        </div>
+
+                                            
                         <!-- Level -->
                         <div class="mt-3">
                             <x-input-label for="level" :value="__('Niveau')" />
                             <select class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 w-full" name="level">
-                                <option {{ $school->level == 0 ? 'selected' : '' }} value="0">Primaire</option>
-                                <option {{ $school->level == 1 ? 'selected' : '' }} value="1">Collège</option>
-                                <option {{ $school->level == 2 ? 'selected' : '' }} value="2">Lycée</option>
+                                <option {{ $school->level == 'Primaire' ? 'selected' : '' }} value="Primaire">Primaire</option>
+                                <option {{ $school->level == 'Collège' ? 'selected' : '' }} value="Collège">Collège</option>
+                                <option {{ $school->level == 'Lycée' ? 'selected' : '' }} value="Lycée">Lycée</option>
                             </select>
                             <x-input-error :messages="$errors->get('level')" class="mt-2" />
                         </div>
@@ -32,7 +40,7 @@
                             <x-input-label for="director" :value="__('Directeur')" />
                             <select class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 w-full" name="user_id">
                                 @foreach ($directors as $director)
-                                    <option {{ $school->user_id == $director->id ? 'selected' : '' }} value="{{ $director->id }}">{{ $director->name }}</option>
+                                    <option {{ $school->user_id == $director->id ? 'selected' : '' }} value="{{ $director->id }}">{{ $director->f_name }} {{ $director->l_name }}</option>
                                 @endforeach
                             </select>
                             <x-input-error :messages="$errors->get('user_id')" class="mt-2" />

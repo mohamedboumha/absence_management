@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('ppr')->unique();
             $table->string('f_name');
             $table->string('l_name');
+            $table->string('f_name_ar');
+            $table->string('l_name_ar');
             $table->foreignId('school_id');
             $table->timestamps();
         });

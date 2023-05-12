@@ -17,7 +17,12 @@ class SchoolFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name,
+            'name_ar' => fake()->name,
+            'level' => fake()->randomElement(['Primaire', 'Collège', 'Lycée']),
+            'user_id' => fake()->numberBetween(1, 30),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

@@ -12,8 +12,6 @@
                         </a>
                     </div>
 
-                    <x-search :route="route('profs.index')"/>
-
                     @if (count($profs))
                     <x-table    :heads="['Nom & Prenom', 'CNI', 'PPR', 'Travailler dans', '']">
                         @foreach ($profs as $prof)
@@ -47,9 +45,6 @@
                         </tr>
                             @endforeach
                     </x-table>
-                    <div class="mt-10">
-                        {{ $profs->links() }}
-                    </div>
                 @else
                     <div class="flex justify-center">
                         Il n'y a pas des professeurs!

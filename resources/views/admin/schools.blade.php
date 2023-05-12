@@ -1,7 +1,6 @@
 <x-app-layout>
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white mb-6 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+        <x-container>
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-between mb-5">
                         <h1 class="font-semibold text-xl">Ecoles</h1>
@@ -13,27 +12,22 @@
                         </a>
                     </div>
 
+                    <x-search :route="route('schools.index')"/>
                     @if (count($schools))
-                    <table class="w-full">
-                        <thead>
-                            <tr>
-                                <td class="whitespace-nowrap px-6 py-4">Nom</td>
-                                <td class="whitespace-nowrap px-6 py-4">Niveau</td>
-                                <td class="whitespace-nowrap px-6 py-4">Directeur</td>
-                                <td class="whitespace-nowrap px-6 py-4">N. des professeurs</td>
-                                <td class="whitespace-nowrap px-6 py-4"></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($schools as $school)
+                    <x-table    :heads="['Nom', 'Niveau', 'Directeur', 'N. des professeurs', '']">
+                        @foreach ($schools as $school)
                             <tr class="border dark:border-neutral-500">
-                                <td class="whitespace-nowrap px-6 py-4">{{ $school->name }}</td>
                                 <td class="whitespace-nowrap px-6 py-4">
-                                    @if ($school->level == 0) Primaire @elseif ($school->level == 1) Collège @else Lycée @endif
+                                    <a class="text-blue-600 font-medium uppercase border-b-4 hover:text-blue-900 hover:border-b-blue-900 border-b-blue-600 " href="{{ route('schools.show', $school) }}">
+                                        {{ $school->name }}
+                                    </a>
+                                </td>
+                                <td class="whitespace-nowrap px-6 py-4">
+                                    {{ $school->level }}
                                 </td>
                                 <td class="whitespace-nowrap px-6 py-4">
                                     @if ($school->user_id == Auth::user()->id) Pas directeur sélectioner @else @foreach ($directors as $director )
-                                    {{ $director->id == $school->user_id ? $director->name : "" }}
+                                    {{ $director->id == $school->user_id ? $director->l_name: "" }}
                                     @endforeach @endif
                                 </td>
                                 <td class="whitespace-nowrap px-6 py-4">{{ count($school->profs) }} professeurs</td>
@@ -51,16 +45,18 @@
                                 </td>
                             </tr>
                             @endforeach
-                        </tbody>
-                    </table>
+                    </x-table>
+                    <div class="mt-10">
+                        {{ $schools->links() }}
+                    </div>
                 @else
                     <div class="flex justify-center">
-                        Il n'y a pas des écoles!
+                        Il n'y a pas des ecoles!
                     </div>
                 @endif
+
             </div>
-        </div>
-        </div>
+        </x-container>
     </div>
 </x-app-layout>
 
@@ -71,7 +67,7 @@
             <x-input-label for="director" :value="__('Directeur')" />
             <select class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-2 w-full" name="director_id">
                 @foreach ($directors as $director)
-                    <option value="{{ $director->id }}">{{ $director->name }}</option>
+                    <option value="{{ $director->id }}">{{ $director->f_name }} {{ $director->l_name }}</option>
                 @endforeach
             </select>
             <x-input-error :messages="$errors->get('director_id')" class="mt-2" />

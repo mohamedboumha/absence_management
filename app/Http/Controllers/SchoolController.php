@@ -16,7 +16,7 @@ class SchoolController extends Controller
     public function index()
     {
         return view('admin.schools',[
-            'schools' => School::all(),
+            'schools' => School::latest()->filter(request(['search']))->paginate(10),
             'directors' => User::where('role', 'director')->get()
         ]);
     }
@@ -46,17 +46,19 @@ class SchoolController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'name_ar' => 'required',
             'level' => 'required',
             'director_id' => 'required'
         ]);
 
         $school = new School();
         $school->name = $request->name;
+        $school->name_ar = $request->name_ar;
         $school->level = $request->level;
         $school->user_id = $request->director_id;
         $school->save();
 
-        return  to_route('schools.index')->with([
+        return  redirect()->back()->with([
             'status' => true,
             'message' => "L'école a été créée avec succès"
         ]);
@@ -67,7 +69,10 @@ class SchoolController extends Controller
      */
     public function show(School $school)
     {
-        //
+        return view('school.show', [
+            'school' => $school,
+            'director' => User::where('id', $school->user_id)->get()[0]
+        ]);
     }
 
     /**
@@ -88,13 +93,17 @@ class SchoolController extends Controller
     {
         $data = $request->validate([
             'name' => 'required',
+            'name_ar' => 'required',
             'level' => 'required',
             'user_id' => 'required'
         ]);
 
         $school->update($data);
 
-        return to_route('schools.index');
+        return to_route('schools.index')->with([
+            'status' => true,
+            'message' => "L'école a été modifier avec succès"
+        ]);
 
     }
 
@@ -105,7 +114,7 @@ class SchoolController extends Controller
     {
         foreach (Prof::all() as $profs) {
             if ($profs->school_id == $school->id) {
-                return to_route('schools.index')->with([
+                return redirect()->back()->with([
                     'status' => false,
                     'message' => "Vous ne pouvez pas supprimer cette école!"
                 ]);
@@ -116,7 +125,7 @@ class SchoolController extends Controller
 
         $school_->delete();
 
-        return to_route('schools.index')->with([
+        return redirect()->back()->with([
             'status' => true,
             'message' => "L'école est supprimée avec succès"
         ]);

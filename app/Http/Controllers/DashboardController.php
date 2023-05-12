@@ -6,24 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\Absence;
 use Carbon\Carbon;
 use App\Models\School;
+use App\Models\Prof;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
     public function admin()
     {
         $lastWeek = Carbon::now()->subWeek();
-    
-        // $schools = School::with('profs.absences')->get();
-        // $organizedData = [];
-        // foreach ($schools as $school) {
-        //     $profAbsences = [];
-        //     foreach ($school->profs as $prof) {
-        //         array_push($profAbsences, [...$prof->absences]);
-        //     }
-        //     $organizedData[$school->id] = [...$profAbsences];
-        // }
         $schools = School::with('profs.absences')->get();
-
         $allAbsences = [];
 
         foreach ($schools as $school) {
@@ -62,7 +53,9 @@ class DashboardController extends Controller
         }
 
         return view('admin.dashboard', [
+            'profs' => Prof::take(5)->get(),
             'schools' => School::all(),
+            'directors' => User::where('role', 'director')->take(5)->get(),
             'weekDays' => Absence::whereBetween('created_at', [$lastWeek, Carbon::now()])->get(),
             'today' => Absence::whereDate('created_at', Carbon::today())->get(),
             'this_month' => Absence::whereBetween('created_at', [Carbon::now()->subDays(30)->startOfDay(), Carbon::now()->endOfDay()])->get(),

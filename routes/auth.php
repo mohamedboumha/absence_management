@@ -65,7 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
 
-    // Handle Director
+        // Handle Director
     Route::middleware(['checkRole:admin'])->group(function () {
         Route::get('admin/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
 
@@ -87,11 +87,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'director'])->name('dashboard');
 
         Route::get('schools', [SchoolController::class, 'index_'])->name('director.schools.index');
-        Route::get('/schools/profs', [ProfController::class, 'index'])->name('prods.index');
+        Route::get('/schools/profs', [ProfController::class, 'index_'])->name('director.profs.index');
 
         // Absences
         // Route::resource('absences', AbsenceController::class);
         Route::get('/{id}/absences', [AbsenceController::class, 'index'])->name('absences.index');
         Route::post('/{id}/absences', [AbsenceController::class, 'store'])->name('absences.store');
+        Route::put('/{id}/absences/{absence}', [AbsenceController::class, 'update'])->name('absences.edit');
+        Route::delete('/{id}/absences/{absence}', [AbsenceController::class, 'destroy'])->name('absences.destroy');
     });
 });

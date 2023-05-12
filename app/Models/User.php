@@ -19,7 +19,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'f_name',
+        'f_name_ar',
+        'l_name',
+        'l_name_ar',
         'email',
         'password',
         'role',
@@ -48,5 +51,18 @@ class User extends Authenticatable
 
     public function schools() {
         return $this->hasMany(School::class);
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        if ($filters['search'] ?? false) {
+            $query->where('f_name', 'like', '%' . request('search') . '%')
+            ->orWhere('l_name', 'like', '%' . request('search') . '%')
+            ->orWhere('f_name_ar', 'like', '%' . request('search') . '%')
+            ->orWhere('l_name_ar', 'like', '%' . request('search') . '%')
+            ->orWhere('cni', 'like', '%' . request('search') . '%')
+            ->orWhere('ppr', 'like', '%' . request('search') . '%')
+            ->orWhere('email', 'like', '%' . request('search') . '%');
+        }
     }
 }

@@ -15,10 +15,21 @@
     </header>
 
     <div class="mt-52 text-4xl font-medium flex flex-col items-center justify-center">
-      <h2 class="mb-16">المدير الإقليمي</h2>
-      <h2 class="mb-16">إلى</h2>
-      <h2 class="mb-16"> السيد (ة) : الإسم الكامل. ر-م : الرقم المالي</h2>
-      <h2 class="mb-16">على يد السيد مدير (ة): اسم المؤسسة</h2>
+      <h2 class="mb-10">المدير الإقليمي</h2>
+      <h2 class="mb-10">
+        <span class="mx-0.5">إلى السيد (ة)</span>
+        <span class="mx-0.5">{{ $prof->f_name_ar }} {{ $prof->l_name_ar }}</span>
+      </h2>
+      <h2 class="mb-10">
+        <span class="mx-0.5">الرقم المالي</span>
+        <span class="mx-0.5">:</span>
+        <span class="mx-0.5">{{ $prof->ppr }}</span>
+      </h2>
+      <h2 class="mb-10"
+      >
+      <span class="mx-0.5">على يد السيد مدير (ة):</span>
+      <span class="mx-0.5">{{ $school->name_ar }}</span>
+    </h2>
       <h2>طانطان</h2>
     </div>
 
@@ -28,39 +39,43 @@
       <p class="my-3">
         <p>
           <span class="mr-36">وبعد، تطبيقا للمرسوم</span>
-          <span>2.99.1216</span>
-          <span>الصادر في</span>
-          <span>6</span>
-          <span>صفر</span>
-          <span>1421</span>
-          <span> في شأن الاقتطاعات</span>
-          <span>من رواتب موظفي</span>
+          <span class="mx-0.5">2.99.1216</span>
+          <span class="mx-0.5">الصادر في</span>
+          <span class="mx-0.5">6</span>
+          <span class="mx-0.5">صفر</span>
+          <span class="mx-0.5">1421</span>
+          <span class="mx-0.5"> في شأن الاقتطاعات</span>
+          <span class="mx-0.5">من رواتب موظفي</span>
         </p>
         <p class="my-10">
-          <span>وأعوان الدولة والجماعات المحلية المتغيبين عن العمل بصفة غير مشروعة</span>
-          <span>تقرر مباشرة الاقتطاع من أجرتك</span>
+          <span class="mx-0.5">وأعوان الدولة والجماعات المحلية المتغيبين عن العمل بصفة غير مشروعة</span>
+          <span class="mx-0.5">تقرر مباشرة الاقتطاع من أجرتك</span>
         </p>
         <p>
-          <span>الشهرية</span>
-          <span> أيام : مدة الغياب</span>
-          <span>.</span>
+          <span class="mx-0.5">الشهرية أيام</span>
+          <span class="mx-0.5">:</span>
+          <span class="mx-0.5">من</span>
+          <span class="mx-0.5">{{ $absence->start }}</span>
+          <span class="mx-0.5">الى</span>
+          <span class="mx-0.5">{{ $absence->end }}</span>
+          <span class="mx-0.5">.</span>
         </p>
       </p>
       <h2 class="my-10 self-end">والسلام</h2>
       <h2 class="self-end">عن مدير الأكاديمية وبتفويض منه</h2>
     </div>
 
-    <footer class="border-t text-2xl flex flex-col items-center" style="margin-top: 420px"> 
+    <footer class="border-t text-2xl flex flex-col items-center" style="margin-top: 470px"> 
       <p class="mt-8">الأكاديمية الجهوية للتربية والتكوين لجهة كلميم واد نون</p>
       <p class="my-3">المديرية الإقليمية بطانطان -مصحة تدبير الموارد البشرية والشؤون الإدارية والمالية</p>
       <p>
-        <span>شارع الشاطيء</span>
-        <span>الحي الإداري ،</span>
-        <span>، الهاتف</span>
-        <span>0528877093</span>
-        <span>-</span>
-        <span>الفاكس</span>
-        <span>0528877533</span>
+        <span class="mx-0.5">شارع الشاطيء</span>
+        <span class="mx-0.5">الحي الإداري ،</span>
+        <span class="mx-0.5">، الهاتف</span>
+        <span class="mx-0.5">0528877093</span>
+        <span class="mx-0.5">-</span>
+        <span class="mx-0.5">الفاكس</span>
+        <span class="mx-0.5">0528877533</span>
       </p>
     </footer>
 </body>

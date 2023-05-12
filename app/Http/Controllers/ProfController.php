@@ -16,13 +16,24 @@ class ProfController extends Controller
     {
         return view('admin.profs', [
             'schools' => School::all(),
-            'profs' => Prof::all()
+            'profs' => Prof::latest()->filter(request(['search']))->paginate(10)
         ]);
     }
 
     public function index_()
     {
+        $director = auth()->user();
 
+        $profs = $director->schools()
+            ->with('profs')
+            ->get()
+            ->pluck('profs')
+            ->flatten();
+
+        return view('director.profs', [
+            'schools' => School::all(),
+            'profs' => $profs
+        ]);
     }
 
 
@@ -31,7 +42,9 @@ class ProfController extends Controller
      */
     public function create()
     {
-        //
+        return view('prof.create', [
+            'schools' => School::all()
+        ]);
     }
 
     /**
@@ -42,6 +55,8 @@ class ProfController extends Controller
         $request->validate([
             'f_name' => 'required',
             'l_name' => 'required',
+            'f_name_ar' => 'required',
+            'l_name_ar' => 'required',
             'cni' => 'required',
             'ppr' => 'required',
             'school_id' => 'required'
@@ -50,6 +65,8 @@ class ProfController extends Controller
         $prof = new Prof();
         $prof->f_name = $request->f_name;
         $prof->l_name = $request->l_name;
+        $prof->f_name_ar = $request->f_name_ar;
+        $prof->l_name_ar = $request->l_name_ar;
         $prof->cni = $request->cni;
         $prof->ppr = $request->ppr;
         $prof->school_id = $request->school_id;
@@ -66,7 +83,7 @@ class ProfController extends Controller
      */
     public function show(Prof $prof)
     {
-        $absences = Absence::where('prof_id', $prof->id)->paginate(10);
+        $absences = Absence::where('prof_id', $prof->id)->latest()->filter(request(['search']))->paginate(10);
 
         return view('prof.show', [
             'prof' => $prof,
@@ -82,7 +99,8 @@ class ProfController extends Controller
     {
         return view('prof.edit', [
             'prof' => $prof,
-            'school' => School::findOrFail($prof->school_id)
+            'selected_school' => School::findOrFail($prof->school_id),
+            'schools' => School::all()
         ]);
     }
 
@@ -91,7 +109,22 @@ class ProfController extends Controller
      */
     public function update(Request $request, Prof $prof)
     {
-        //
+        $data = $request->validate([
+            'f_name' => 'required',
+            'l_name' => 'required',
+            'f_name_ar' => 'required',
+            'l_name_ar' => 'required',
+            'cni' => 'required',
+            'ppr' => 'required',
+            'school_id' => 'required'
+        ]);
+
+        $prof->update($data);
+
+        return to_route('profs.index')->with([
+            'status' => true,
+            'message' => "Le professeur a été modifier avec succès"
+        ]);
     }
 
     /**
@@ -103,7 +136,7 @@ class ProfController extends Controller
 
         $prof_->delete();
 
-        return to_route('profs.index')->with([
+        return redirect()->back()->with([
             'status' => true,
             'message' => "Le professeur a été supprimée avec succès"
         ]);

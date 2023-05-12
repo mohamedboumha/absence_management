@@ -46,7 +46,7 @@ class AbsenceController extends Controller
         $absence->start = $request->start;
         $absence->end = $request->end;
         $absence->status = $request->status == 'on' ? true : false;
-        $request->status == 'on' && $absence->justification = $request->justification;
+        $request->status == 'on' ? $absence->justification = 'Justifié' : $absence->justification = 'Injustifié';
         $absence->prof_id = $request->route('id');
         $absence->save();
 
@@ -69,7 +69,7 @@ class AbsenceController extends Controller
      */
     public function edit(Absence $absence)
     {
-        //
+        return view('absence.edit');
     }
 
     /**
@@ -83,9 +83,16 @@ class AbsenceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Absence $absence)
+    public function destroy(Request $request)
     {
-        //
+        $absence = Absence::findOrFail($request->absence);
+
+        $absence->delete();
+
+        return redirect()->back()->with([
+            'status' => true,
+            'message' => "L'école est supprimée avec succès"
+        ]);
     }
 
 }

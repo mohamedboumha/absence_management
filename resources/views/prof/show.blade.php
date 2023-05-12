@@ -14,57 +14,55 @@
           </div>
           <div class="bg-white py-12 mb-6 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="text-lg font-medium px-10">
-
-              {{-- <input type="text" id="searchInput" placeholder="Search..."> --}}
-              <table class="w-full">
-                <thead>
-                  <tr>
-                    <td class="whitespace-nowrap px-6 py-4">Début</td>
-                      <td class="whitespace-nowrap px-6 py-4">Fin</td>
-                      <td class="whitespace-nowrap px-6 py-4">Statut</td>
-                      <td class="whitespace-nowrap px-6 py-4">Justification</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  @foreach ($absences as $absence)
-                  <tr class="border dark:border-neutral-500">
             
-                      <td class="whitespace-nowrap px-6 py-4">{{ $absence->start }}</td>
-                      <td class="whitespace-nowrap px-6 py-4">{{ $absence->end }}</td>
-                      <td class="whitespace-nowrap px-6 py-4">{{ $absence->status == 0 ? "Injustifié" : "Justifié" }}</td>
-                      <td class="whitespace-nowrap px-6 py-4">
-                          @if ($absence->justification)
-                              {{ $absence->justification }}
-                          @else
-                              -
-                          @endif
-                      </td>
-                        @if (auth()->user()->role == 'director')
-                            <td class="whitespace-nowrap px-6 py-4">
-                              <form action="{{ route('absences.index', $absence->id) }}" >
-                                <button  class="p-0 text-white font-bold border px-2 bg-black">
-                                  Gérer les absences
+              <x-search :route="route('profs.show', $prof->id)"></x-search>
+
+            @if (count($absences))
+            <x-table    :heads="['Début', 'Fin', 'Statut', 'Justification', '']">
+              @foreach ($absences as $absence)
+              <tr class="border dark:border-neutral-500">
+        
+                  <td class="whitespace-nowrap px-6 py-4">{{ $absence->start }}</td>
+                  <td class="whitespace-nowrap px-6 py-4">{{ $absence->end }}</td>
+                  <td class="whitespace-nowrap px-6 py-4">{{ $absence->status }}</td>
+                  <td class="whitespace-nowrap px-6 py-4">
+                      @if ($absence->justification)
+                          {{ $absence->justification }}
+                      @else
+                          -
+                      @endif
+                  </td>
+                    @if (auth()->user()->role == 'director')
+                        <td class="whitespace-nowrap px-6 py-4">
+                          <form action="{{ route('absences.index', $absence->id) }}" >
+                            <button  class="p-0 text-white font-bold border px-2 bg-black">
+                              Gérer les absences
+                            </button>
+                          </form>
+                        </td>
+                        @endif
+                        
+                        @if (auth()->user()->role == 'admin' && $absence->status == 0)
+                        <td class="whitespace-nowrap px-6 py-4" >
+                              <form method="GET" action="{{ route('pdf', $absence) }}">
+                                @csrf
+                                <button class="p-0 text-white font-bold border px-2 bg-black">
+                                  PDF
                                 </button>
                               </form>
-                            </td>
-                            @endif
-                            
-                            @if (auth()->user()->role == 'admin' && $absence->status == 0)
-                            <td class="whitespace-nowrap px-6 py-4" >
-                                  <form method="GET" action="{{ route('pdf', $absence) }}">
-                                    @csrf
-                                    <button class="p-0 text-white font-bold border px-2 bg-black">
-                                      PDF
-                                    </button>
-                                  </form>
-                            </td>
-                        @endif
+                        </td>
+                    @endif
 
-                        </tr>
-                        @endforeach
-                      </tbody>
-                    </table>
-                    <div class="mt-10">{{ $absences->links() }}</div>
+                    </tr>
+                    @endforeach
+            </x-table>
+              @else
+                  <div class="flex justify-center">
+                      Pas d'absences!
+                  </div>
+              @endif
+              
+              <div class="mt-10">{{ $absences->links() }}</div>
                     
             </div>
           </div>

@@ -19,4 +19,14 @@ class Absence extends Model
     public function prof() {
         return $this->belongsTo(Prof::class);
     }
+    
+    public function scopeFilter($query, array $filters)
+    {
+        if ($filters['search'] ?? false) {
+            $query->where('start', 'like', '%' . request('search') . '%')
+            ->orWhere('status', 'like', '%' . request('search') . '%')
+            ->orWhere('justification', 'like', '%' . request('search') . '%')
+            ->orWhere('end', 'like', '%' . request('search') . '%');
+        }
+    }
 }
