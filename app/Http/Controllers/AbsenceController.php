@@ -42,11 +42,13 @@ class AbsenceController extends Controller
             'status',
         ]);
 
+        // dd($request->status);
+
         $absence = new Absence();
         $absence->start = $request->start;
         $absence->end = $request->end;
-        $absence->status = $request->status == 'on' ? true : false;
-        $request->status == 'on' ? $absence->justification = 'Justifié' : $absence->justification = 'Injustifié';
+        $absence->status = $request->status == 'on' ? 'Justifié' : 'Injustifié';
+        $request->status == 'on' && $absence->justification = $request->justification;
         $absence->prof_id = $request->route('id');
         $absence->save();
 
@@ -67,15 +69,15 @@ class AbsenceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Absence $absence)
+    public function edit(Request $request)
     {
-        return view('absence.edit');
+        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Absence $absence)
+    public function update(Request $request)
     {
         //
     }

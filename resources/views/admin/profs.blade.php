@@ -15,7 +15,7 @@
                     <x-search :route="route('profs.index')"/>
 
                     @if (count($profs))
-                    <x-table    :heads="['Nom & Prenom', 'CNI', 'PPR', 'Travailler dans', '']">
+                    <x-table    :heads="['Nom & Prenom', 'CNI', 'PPR', 'Travailler dans', 'N. d\'absences', '']">
                         @foreach ($profs as $prof)
                         <tr class="border dark:border-neutral-500">
                             <td class="whitespace-nowrap py-4 px-4">
@@ -32,6 +32,7 @@
                                     @endif
                                 @endforeach
                             </td>
+                            <td class="whitespace-nowrap py-4 px-4">{{ count($prof->absences) }}</td>
                             <td class="whitespace-nowrap py-4 px-4 flex items-center justify-center">
                                 <form method="post" action="{{ route('profs.destroy', $prof->id) }}">
                                     @csrf

@@ -20,7 +20,7 @@
 
                             <td class="whitespace-nowrap px-6 py-4">{{ $absence->start }}</td>
                             <td class="whitespace-nowrap px-6 py-4">{{ $absence->end }}</td>
-                            <td class="whitespace-nowrap px-6 py-4">{{ $absence->status == 0 ? "Injustifié" : "Justifié" }}</td>
+                            <td class="whitespace-nowrap px-6 py-4">{{ $absence->status }}</td>
                             <td class="whitespace-nowrap px-6 py-4">
                                 @if ($absence->justification)
                                     {{ $absence->justification }}
@@ -36,9 +36,6 @@
                                         Supprimer
                                     </button>
                                 </form>
-                                <a href="{{ route('absences.edit', ['absence'=>$absence, 'id'=>$prof[0]->id]) }}" class="p-0 text-white font-bold border px-2 bg-green-600">
-                                    Modifier
-                                </a>
                             </td>
                         </tr>
                         @endforeach

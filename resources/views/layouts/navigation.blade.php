@@ -39,9 +39,15 @@ $navlinks = [
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
+                    @if (auth()->user()->role == 'admin')
                     <a class="" href="{{ route('admin.dashboard') }}">
                         AManag
                     </a>
+                    @else
+                    <a class="" href="{{ route('dashboard') }}">
+                        AManag
+                    </a>
+                    @endif
                 </div>
 
 

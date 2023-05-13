@@ -12,11 +12,12 @@ class Prof extends Model
     use HasFactory;
     protected $fillable = [
         'f_name',
-        'f_name_ar',
         'l_name',
+        'f_name_ar',
         'l_name_ar',
         'ppr',
         'cni',
+        'school_id'
     ];
 
     public function school() {

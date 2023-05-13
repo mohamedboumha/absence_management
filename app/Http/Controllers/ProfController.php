@@ -24,11 +24,18 @@ class ProfController extends Controller
     {
         $director = auth()->user();
 
-        $profs = $director->schools()
-            ->with('profs')
-            ->get()
-            ->pluck('profs')
-            ->flatten();
+        $profs = Prof::whereIn('school_id', $director->schools()->pluck('id'))
+        ->where(function ($query) {
+            $query->when(request('search'), function ($q, $search) {
+                $q->where('f_name', 'like', '%' . $search . '%')
+                  ->orWhere('l_name', 'like', '%' . $search . '%')
+                  ->orWhere('f_name_ar', 'like', '%' . $search . '%')
+                  ->orWhere('l_name_ar', 'like', '%' . $search . '%')
+                  ->orWhere('cni', 'like', '%' . $search . '%')
+                  ->orWhere('ppr', 'like', '%' . $search . '%');
+            });
+        })
+        ->paginate(10);
 
         return view('director.profs', [
             'schools' => School::all(),

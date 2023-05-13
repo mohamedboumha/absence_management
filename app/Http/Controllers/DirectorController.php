@@ -81,9 +81,20 @@ class DirectorController extends Controller
      */
     public function show(string $id)
     {
-        return view('director.show', [
-            'director' => User::findOrFail($id),
-        ]);
+     $director = User::findOrFail($id);
+    
+    // Load all the schools associated with the director
+    $schools = $director->schools()->get();
+
+    // Load the latest 5 professors for each school
+    $schools->load(['profs' => function ($query) {
+        $query->latest()->take(5);
+    }]);
+
+    return view('director.show', [
+        'director' => $director,
+        'schools' => $schools,
+    ]);
     }
 
     /**

@@ -87,13 +87,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'director'])->name('dashboard');
 
         Route::get('schools', [SchoolController::class, 'index_'])->name('director.schools.index');
-        Route::get('/schools/profs', [ProfController::class, 'index_'])->name('director.profs.index');
+        Route::get('schools/{school}', [SchoolController::class, 'show_'])->name('director.schools.show');
+        Route::get('/profs', [ProfController::class, 'index_'])->name('director.profs.index');
+        Route::get('/profs/{prof}', [ProfController::class, 'show'])->name('director.profs.show');
 
         // Absences
-        // Route::resource('absences', AbsenceController::class);
         Route::get('/{id}/absences', [AbsenceController::class, 'index'])->name('absences.index');
         Route::post('/{id}/absences', [AbsenceController::class, 'store'])->name('absences.store');
-        Route::put('/{id}/absences/{absence}', [AbsenceController::class, 'update'])->name('absences.edit');
+        Route::get('/{id}/absences/{absence}', [AbsenceController::class, 'edit'])->name('absences.edit');
+        Route::put('/{id}/absences/{absence}', [AbsenceController::class, 'update'])->name('absences.update');
         Route::delete('/{id}/absences/{absence}', [AbsenceController::class, 'destroy'])->name('absences.destroy');
     });
 });

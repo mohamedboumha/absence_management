@@ -8,6 +8,7 @@
                   <li>CNI : {{ $prof->cni }}</li>
                   <li>PPR : {{ $prof->ppr }}</li>
                   <li>Travailler dans : {{ $school->name }}</li>
+                  <li>N. total d'absences : {{ count($prof->absences) }}</li>
                 </div>
       
               </div>
@@ -32,25 +33,26 @@
                           -
                       @endif
                   </td>
-                    @if (auth()->user()->role == 'director')
-                        <td class="whitespace-nowrap px-6 py-4">
-                          <form action="{{ route('absences.index', $absence->id) }}" >
-                            <button  class="p-0 text-white font-bold border px-2 bg-black">
-                              Gérer les absences
+                        
+                    @if (auth()->user()->role == 'admin' && $absence->status == 'Injustifié')
+                    <td class="whitespace-nowrap px-6 py-4" >
+                          <form method="GET" action="{{ route('pdf', $absence) }}">
+                            @csrf
+                            <button class="p-0 text-white font-bold border px-2 bg-black">
+                              PDF
                             </button>
                           </form>
-                        </td>
-                        @endif
-                        
-                        @if (auth()->user()->role == 'admin' && $absence->status == 0)
-                        <td class="whitespace-nowrap px-6 py-4" >
-                              <form method="GET" action="{{ route('pdf', $absence) }}">
-                                @csrf
-                                <button class="p-0 text-white font-bold border px-2 bg-black">
-                                  PDF
-                                </button>
-                              </form>
-                        </td>
+                    </td>
+                    @else
+                    <td class="whitespace-nowrap px-6 py-4">
+                      <form method="post" action="{{ route('absences.destroy', ['absence'=>$absence, 'id'=>$prof->id]) }}">
+                          @csrf
+                          @method('delete')
+                          <button class="p-0 text-white font-bold border px-2 bg-red-500">
+                              Supprimer
+                          </button>
+                    </form>
+                    </td>
                     @endif
 
                     </tr>

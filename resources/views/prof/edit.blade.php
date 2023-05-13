@@ -7,10 +7,9 @@
           <x-back />
       </div>
   
-        <form method="POST" class="mt-10"  action="{{ route('profs.store') }}">
+        <form method="POST" class="mt-10"  action="{{ route('profs.update', $prof) }}">
           @csrf
-  
-          
+          @method('put')
           <div class="flex justify-around items-center w-full mb-3">
             <!-- First Name -->
             <div class="w-1/2">

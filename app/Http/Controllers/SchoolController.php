@@ -23,9 +23,13 @@ class SchoolController extends Controller
     public function index_()
     {
         $schools = School::where('user_id', auth()->user()->id)->get();
+
+        $schools->load(['profs' => function ($query) {
+            $query->latest()->take(10);
+        }]);
+
         return view('director.schools', [
-            'absence' => Absence::all(),
-            'profs' => Prof::with('absences')->get(),
+            'absence' => Absence::latest()->filter(request(['search']))->paginate(10),
             'schools' => $schools
         ]);
 
@@ -71,7 +75,17 @@ class SchoolController extends Controller
     {
         return view('school.show', [
             'school' => $school,
-            'director' => User::where('id', $school->user_id)->get()[0]
+            'director' => User::where('id', $school->user_id)->get()[0],
+            'profs' => Prof::where('school_id',$school->id)->filter(request(['search']))->paginate(10)
+        ]);
+    }
+
+    public function show_(School $school)
+    {
+        return view('school.show', [
+            'school' => $school,
+            'director' => User::where('id', $school->user_id)->get()[0],
+            'profs' => Prof::where('school_id',$school->id)->filter(request(['search']))->paginate(10)
         ]);
     }
 
