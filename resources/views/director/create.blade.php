@@ -2,7 +2,7 @@
     <div class="p-12">
       <x-container>
         <div class="flex justify-between mb-">
-          <h1 class="font-semibold text-2xl">Ajouter professeur</h1>
+          <h1 class="font-semibold text-2xl">Ajouter directeur</h1>
       
           <x-back />
       </div>
